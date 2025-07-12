@@ -1,3 +1,5 @@
+import { getPeriodicTableElements } from './lib/periodicTable.js';
+
 const wordInputForm = document.querySelector('#word-input');
 const resultSection = document.querySelector('#result');
 
@@ -13,6 +15,16 @@ wordInputForm.addEventListener('submit', function handleSubmit(event) {
     return;
   }
 
+  const periodicTableElements = getPeriodicTableElements(userInput);
+
+  if (periodicTableElements.length == 0) {
+    displayErrorMessage(
+      `The word '${userInput}' cannot be represented using periodic table elements. Please try some other word.`
+    );
+    return;
+  }
+
+  displayWord(periodicTableElements);
   this.reset();
 });
 
@@ -36,4 +48,33 @@ function displayErrorMessage(errorMessage) {
 
 function clearResultSectionContent() {
   Array.from(resultSection.children).forEach((element) => element.remove());
+}
+
+function displayWord(periodicTableElements) {
+  const displayWordDiv = document.createElement('div');
+  displayWordDiv.classList.add('display-word');
+
+  periodicTableElements.forEach((element) => {
+    const elementDiv = prepareElementDiv(element);
+    displayWordDiv.appendChild(elementDiv);
+  });
+
+  resultSection.appendChild(displayWordDiv);
+  // --------
+  function prepareElementDiv(element) {
+    const elementDiv = document.createElement('div');
+    elementDiv.classList.add('element');
+    prepareElementSpan('' + element.number, 'atomic-number', elementDiv);
+    prepareElementSpan(element.symbol, 'element-symbol', elementDiv);
+    prepareElementSpan(element.name, 'element-name', elementDiv);
+    return elementDiv;
+  }
+
+  function prepareElementSpan(text, class_, elementDiv) {
+    const span = document.createElement('span');
+    const spanText = document.createTextNode(text);
+    span.appendChild(spanText);
+    span.classList.add(class_);
+    elementDiv.appendChild(span);
+  }
 }

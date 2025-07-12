@@ -1,0 +1,138 @@
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  button,
+  input {
+    font-family: inherit;
+  }
+}
+
+@layer variables {
+  :root {
+    --hue: 180;
+    --saturation: 100%;
+    --font-family: 'Cascadia Code', monospace;
+    --line-height: 1.4;
+  }
+}
+
+@layer base {
+  body {
+    font-family: var(--font-family);
+    line-height: var(--line-height);
+    background-color: hsl(var(--hue), var(--saturation), 10%);
+    color: hsl(var(--hue), var(--saturation), 40%);
+  }
+
+  :is(
+      a[href],
+      area[href],
+      input:not([disabled]),
+      select:not([disabled]),
+      textarea:not([disabled]),
+      button:not([disabled]),
+      iframe,
+      object,
+      embed,
+      [tabindex]:not([tabindex='-1']),
+      [contenteditable]:not([contenteditable='false'])
+    ):focus {
+    outline: 2px solid hsl(var(--hue), var(--saturation), 30%);
+    outline-offset: 2px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer component {
+  form.word-input {
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+
+    button,
+    input {
+      border: 2px solid hsl(var(--hue), var(--saturation), 40%);
+      border-radius: 0.5em;
+      padding: 0.5em 0.75em;
+    }
+
+    button {
+      background-color: hsl(var(--hue), var(--saturation), 40%);
+      font-weight: 600;
+      color: hsl(180, 100%, 10%);
+
+      &:hover {
+        background-color: hsl(var(--hue), var(--saturation), 45%);
+      }
+    }
+
+    input {
+      background-color: transparent;
+      color: hsl(var(--hue), var(--saturation), 45%);
+    }
+  }
+
+  .display-word {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    .element {
+      width: 8rem;
+      display: grid;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border: 2px solid hsl(var(--hue), var(--saturation), 40%);
+      border-radius: 0.5em;
+      color: hsl(180, 100%, 40%);
+
+      .atomic-number {
+        text-align: right;
+        font-size: 0.8rem;
+        font-weight: bold;
+      }
+
+      .element-symbol {
+        text-align: center;
+        font-size: 2rem;
+        color: hsl(var(--hue), var(--saturation), 45%);
+      }
+
+      .element-name {
+        font-size: 0.8rem;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+@layer utility {
+  [data-debug] {
+    outline: 2px dotted tomato;
+  }
+
+  .inline-wrapper {
+    margin-inline: auto;
+    max-width: 768px;
+    padding: 1rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .flow > * + * {
+    margin-block-start: 1em;
+  }
+}

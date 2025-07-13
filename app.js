@@ -24,7 +24,8 @@ wordInputForm.addEventListener('submit', function handleSubmit(event) {
     return;
   }
 
-  displayWord(periodicTableElements);
+  var wordElement = prepareWordElement(periodicTableElements);
+  resultSection.appendChild(wordElement);
   this.reset();
 });
 
@@ -50,7 +51,7 @@ function clearResultSectionContent() {
   Array.from(resultSection.children).forEach((element) => element.remove());
 }
 
-function displayWord(periodicTableElements) {
+function prepareWordElement(periodicTableElements) {
   var div = document.createElement('div');
   div.classList.add('display-word');
 
@@ -59,7 +60,7 @@ function displayWord(periodicTableElements) {
     div.appendChild(elementDiv);
   }
 
-  resultSection.appendChild(div);
+  return div;
 }
 
 function prepareElementDiv(element) {

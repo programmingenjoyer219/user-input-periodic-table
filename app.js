@@ -5,7 +5,7 @@ const resultSection = document.querySelector('#result');
 
 wordInputForm.addEventListener('submit', function handleSubmit(event) {
   event.preventDefault();
-  clearResultSectionContent();
+  clearContent(resultSection);
   const formData = new FormData(this);
   const userInput = formData.get('word').toLowerCase();
   const [isInputValid, validationErrorMessage] = validateUserInput(userInput);
@@ -47,8 +47,12 @@ function displayErrorMessage(errorMessage) {
   resultSection.appendChild(p);
 }
 
-function clearResultSectionContent() {
-  Array.from(resultSection.children).forEach((element) => element.remove());
+function clearContent(section) {
+  var children = Array.from(section.children);
+
+  for (let child of children) {
+    child.remove();
+  }
 }
 
 function prepareWordElement(periodicTableElements) {

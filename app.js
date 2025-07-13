@@ -6,9 +6,10 @@ const resultSection = document.querySelector('#result');
 wordInputForm.addEventListener('submit', function handleSubmit(event) {
   event.preventDefault();
   clearContent(resultSection);
-  const formData = new FormData(this);
-  const userInput = formData.get('word').toLowerCase();
-  const [isInputValid, validationErrorMessage] = validateUserInput(userInput);
+
+  var formData = new FormData(this);
+  var userInput = formData.get('word').trim().toLowerCase();
+  var [isInputValid, validationErrorMessage] = validateUserInput(userInput);
 
   if (!isInputValid) {
     let errorMessageElement = prepareErrorMessageElement(
@@ -18,7 +19,7 @@ wordInputForm.addEventListener('submit', function handleSubmit(event) {
     return;
   }
 
-  const periodicTableElements = getPeriodicTableElements(userInput);
+  var periodicTableElements = getPeriodicTableElements(userInput);
 
   if (periodicTableElements.length == 0) {
     let errorMessageElement = prepareErrorMessageElement(
@@ -34,7 +35,7 @@ wordInputForm.addEventListener('submit', function handleSubmit(event) {
 });
 
 function validateUserInput(userInput) {
-  const regex = /^[a-z]{3,}$/;
+  var regex = /^[a-z]{3,}$/;
   if (regex.test(userInput)) {
     return [true, null];
   }

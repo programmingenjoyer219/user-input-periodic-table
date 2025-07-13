@@ -11,16 +11,20 @@ wordInputForm.addEventListener('submit', function handleSubmit(event) {
   const [isInputValid, validationErrorMessage] = validateUserInput(userInput);
 
   if (!isInputValid) {
-    displayErrorMessage(validationErrorMessage);
+    let errorMessageElement = prepareErrorMessageElement(
+      validationErrorMessage
+    );
+    resultSection.appendChild(errorMessageElement);
     return;
   }
 
   const periodicTableElements = getPeriodicTableElements(userInput);
 
   if (periodicTableElements.length == 0) {
-    displayErrorMessage(
+    let errorMessageElement = prepareErrorMessageElement(
       `The word '${userInput}' cannot be represented using periodic table elements. Please try some other word.`
     );
+    resultSection.appendChild(errorMessageElement);
     return;
   }
 
@@ -40,11 +44,11 @@ function validateUserInput(userInput) {
   ];
 }
 
-function displayErrorMessage(errorMessage) {
-  const p = document.createElement('p');
-  const pText = document.createTextNode(errorMessage);
-  p.appendChild(pText);
-  resultSection.appendChild(p);
+function prepareErrorMessageElement(message) {
+  var p = document.createElement('p');
+  var text = document.createTextNode(message);
+  p.appendChild(text);
+  return p;
 }
 
 function clearContent(section) {

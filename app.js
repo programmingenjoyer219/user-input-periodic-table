@@ -64,11 +64,9 @@ function displayWord(periodicTableElements) {
   function prepareElementDiv(element) {
     var div = document.createElement('div');
     div.classList.add('element');
-
-    for (key in element) {
-      prepareElementSpan('' + element[key], 'element-' + key, div);
-    }
-
+    prepareElementSpan('' + element.number, 'element-number', div);
+    prepareElementSpan(element.symbol, 'element-symbol', div);
+    prepareElementSpan(element.name, 'element-name', div);
     return div;
   }
 

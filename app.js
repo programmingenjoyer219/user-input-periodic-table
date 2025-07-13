@@ -62,12 +62,14 @@ function displayWord(periodicTableElements) {
   resultSection.appendChild(displayWordDiv);
   // --------
   function prepareElementDiv(element) {
-    const elementDiv = document.createElement('div');
-    elementDiv.classList.add('element');
-    prepareElementSpan('' + element.number, 'atomic-number', elementDiv);
-    prepareElementSpan(element.symbol, 'element-symbol', elementDiv);
-    prepareElementSpan(element.name, 'element-name', elementDiv);
-    return elementDiv;
+    var div = document.createElement('div');
+    div.classList.add('element');
+
+    for (key in element) {
+      prepareElementSpan('' + element[key], 'element-' + key, div);
+    }
+
+    return div;
   }
 
   function prepareElementSpan(text, class_, elementDiv) {

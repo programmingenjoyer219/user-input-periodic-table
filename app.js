@@ -51,30 +51,30 @@ function clearResultSectionContent() {
 }
 
 function displayWord(periodicTableElements) {
-  const displayWordDiv = document.createElement('div');
-  displayWordDiv.classList.add('display-word');
+  var div = document.createElement('div');
+  div.classList.add('display-word');
 
-  periodicTableElements.forEach((element) => {
-    const elementDiv = prepareElementDiv(element);
-    displayWordDiv.appendChild(elementDiv);
-  });
-
-  resultSection.appendChild(displayWordDiv);
-  // --------
-  function prepareElementDiv(element) {
-    var div = document.createElement('div');
-    div.classList.add('element');
-    prepareElementSpan('' + element.number, 'element-number', div);
-    prepareElementSpan(element.symbol, 'element-symbol', div);
-    prepareElementSpan(element.name, 'element-name', div);
-    return div;
+  for (let element of periodicTableElements) {
+    let elementDiv = prepareElementDiv(element);
+    div.appendChild(elementDiv);
   }
 
-  function prepareElementSpan(text, class_, elementDiv) {
-    const span = document.createElement('span');
-    const spanText = document.createTextNode(text);
-    span.appendChild(spanText);
-    span.classList.add(class_);
-    elementDiv.appendChild(span);
-  }
+  resultSection.appendChild(div);
+}
+
+function prepareElementDiv(element) {
+  var div = document.createElement('div');
+  div.classList.add('element');
+  prepareElementSpan('' + element.number, 'element-number', div);
+  prepareElementSpan(element.symbol, 'element-symbol', div);
+  prepareElementSpan(element.name, 'element-name', div);
+  return div;
+}
+
+function prepareElementSpan(text, class_, elementDiv) {
+  var span = document.createElement('span');
+  var text = document.createTextNode(text);
+  span.appendChild(text);
+  span.classList.add(class_);
+  elementDiv.appendChild(span);
 }

@@ -12,26 +12,26 @@ wordInputForm.addEventListener('submit', function handleSubmit(event) {
   var [isInputValid, validationErrorMessage] = validateUserInput(userInput);
 
   if (!isInputValid) {
-    let errorMessageElement = prepareErrorMessageElement(
-      validationErrorMessage
-    );
-    resultSection.appendChild(errorMessageElement);
+    displayErrorMessage(validationErrorMessage, resultSection);
     return;
   }
 
   var periodicTableElements = getPeriodicTableElements(userInput);
 
   if (periodicTableElements.length == 0) {
-    let errorMessageElement = prepareErrorMessageElement(
-      `The word '${userInput}' cannot be represented using periodic table elements. Please try some other word.`
-    );
-    resultSection.appendChild(errorMessageElement);
+    let errorMessage = `The word '${userInput}' cannot be represented using periodic table elements. Please try some other word.`;
+    displayErrorMessage(errorMessage, resultSection);
     return;
   }
 
   var wordElement = prepareWordElement(periodicTableElements);
   resultSection.appendChild(wordElement);
   this.reset();
+  // --------
+  function displayErrorMessage(message, section) {
+    var element = prepareErrorMessageElement(message);
+    section.appendChild(element);
+  }
 });
 
 function validateUserInput(userInput) {

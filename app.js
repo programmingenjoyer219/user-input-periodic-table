@@ -65,16 +65,32 @@ function displayWord(periodicTableElements) {
 function prepareElementDiv(element) {
   var div = document.createElement('div');
   div.classList.add('element');
-  prepareElementSpan('' + element.number, 'element-number', div);
-  prepareElementSpan(element.symbol, 'element-symbol', div);
-  prepareElementSpan(element.name, 'element-name', div);
+
+  var spans = prepareSpans();
+
+  for (let span of spans) {
+    div.appendChild(span);
+  }
+
   return div;
+  // --------
+  function prepareSpans() {
+    var spans = [];
+
+    for (let property of ['number', 'symbol', 'name']) {
+      let text = element[property];
+      let class_ = 'element-' + property;
+      spans.push(prepareElementSpan(text, class_));
+    }
+
+    return spans;
+  }
 }
 
-function prepareElementSpan(text, class_, elementDiv) {
+function prepareElementSpan(text, class_) {
   var span = document.createElement('span');
   var text = document.createTextNode(text);
   span.appendChild(text);
   span.classList.add(class_);
-  elementDiv.appendChild(span);
+  return span;
 }

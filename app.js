@@ -5,31 +5,37 @@ const resultSection = document.querySelector('#result');
 
 wordInputForm.addEventListener('submit', function handleSubmit(event) {
   event.preventDefault();
-  clearResultSectionContent();
-  const formData = new FormData(this);
-  const userInput = formData.get('word').toLowerCase();
-  const [isInputValid, validationErrorMessage] = validateUserInput(userInput);
+  clearContent(resultSection);
+
+  var formData = new FormData(this);
+  var userInput = formData.get('word').trim().toLowerCase();
+  var [isInputValid, validationErrorMessage] = validateUserInput(userInput);
 
   if (!isInputValid) {
-    displayErrorMessage(validationErrorMessage);
+    displayErrorMessage(validationErrorMessage, resultSection);
     return;
   }
 
-  const periodicTableElements = getPeriodicTableElements(userInput);
+  var periodicTableElements = getPeriodicTableElements(userInput);
 
   if (periodicTableElements.length == 0) {
-    displayErrorMessage(
-      `The word '${userInput}' cannot be represented using periodic table elements. Please try some other word.`
-    );
+    let errorMessage = `The word '${userInput}' cannot be represented using periodic table elements. Please try some other word.`;
+    displayErrorMessage(errorMessage, resultSection);
     return;
   }
 
-  displayWord(periodicTableElements);
+  var wordElement = prepareWordElement(periodicTableElements);
+  resultSection.appendChild(wordElement);
   this.reset();
+  // --------
+  function displayErrorMessage(message, section) {
+    var element = prepareErrorMessageElement(message);
+    section.appendChild(element);
+  }
 });
 
 function validateUserInput(userInput) {
-  const regex = /^[a-z]{3,}$/;
+  var regex = /^[a-z]{3,}$/;
   if (regex.test(userInput)) {
     return [true, null];
   }
@@ -39,42 +45,62 @@ function validateUserInput(userInput) {
   ];
 }
 
-function displayErrorMessage(errorMessage) {
-  const p = document.createElement('p');
-  const pText = document.createTextNode(errorMessage);
-  p.appendChild(pText);
-  resultSection.appendChild(p);
+function prepareErrorMessageElement(message) {
+  var p = document.createElement('p');
+  var text = document.createTextNode(message);
+  p.appendChild(text);
+  return p;
 }
 
-function clearResultSectionContent() {
-  Array.from(resultSection.children).forEach((element) => element.remove());
+function clearContent(section) {
+  var children = Array.from(section.children);
+
+  for (let child of children) {
+    child.remove();
+  }
 }
 
-function displayWord(periodicTableElements) {
-  const displayWordDiv = document.createElement('div');
-  displayWordDiv.classList.add('display-word');
+function prepareWordElement(periodicTableElements) {
+  var div = document.createElement('div');
+  div.classList.add('display-word');
 
-  periodicTableElements.forEach((element) => {
-    const elementDiv = prepareElementDiv(element);
-    displayWordDiv.appendChild(elementDiv);
-  });
+  for (let element of periodicTableElements) {
+    let elementDiv = prepareElementDiv(element);
+    div.appendChild(elementDiv);
+  }
 
-  resultSection.appendChild(displayWordDiv);
+  return div;
+}
+
+function prepareElementDiv(element) {
+  var div = document.createElement('div');
+  div.classList.add('element');
+
+  var spans = prepareSpans();
+
+  for (let span of spans) {
+    div.appendChild(span);
+  }
+
+  return div;
   // --------
-  function prepareElementDiv(element) {
-    const elementDiv = document.createElement('div');
-    elementDiv.classList.add('element');
-    prepareElementSpan('' + element.number, 'atomic-number', elementDiv);
-    prepareElementSpan(element.symbol, 'element-symbol', elementDiv);
-    prepareElementSpan(element.name, 'element-name', elementDiv);
-    return elementDiv;
-  }
+  function prepareSpans() {
+    var spans = [];
 
-  function prepareElementSpan(text, class_, elementDiv) {
-    const span = document.createElement('span');
-    const spanText = document.createTextNode(text);
-    span.appendChild(spanText);
-    span.classList.add(class_);
-    elementDiv.appendChild(span);
+    for (let property of ['number', 'symbol', 'name']) {
+      let text = element[property];
+      let class_ = 'element-' + property;
+      spans.push(prepareElementSpan(text, class_));
+    }
+
+    return spans;
   }
+}
+
+function prepareElementSpan(text, class_) {
+  var span = document.createElement('span');
+  var text = document.createTextNode(text);
+  span.appendChild(text);
+  span.classList.add(class_);
+  return span;
 }
